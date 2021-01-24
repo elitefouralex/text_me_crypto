@@ -5,27 +5,7 @@ import json
 import os
 from twilio.rest import Client
 
-#bitcoin global variables
-response1 = requests.get("https://api.coinbase.com/v2/prices/BTC-USD/spot")
-data1 = response1.json()
-currency1 = data1["data"]["base"]
-price1 = data1["data"]["amount"]
-bitcoin_env_amount = float(os.environ.get("bitcoin_amount"))
-pricetofloat1 = float(price1)
-wallet_value1 = pricetofloat1 * bitcoin_env_amount
 
-#ethereum global variables
-response2 = requests.get("https://api.coinbase.com/v2/prices/ETH-USD/spot")
-data2 = response2.json()
-currency2 = data2["data"]["base"]
-price2 = data2["data"]["amount"]
-ethereum_env_amount = float(os.environ.get("ethereum_amount"))
-pricetofloat2 = float(price2)
-wallet_value2 = pricetofloat2 * ethereum_env_amount
-
-#verbiage to be sent via text message
-output1 = (f"{currency1} {pricetofloat1:.2f}, Bitcoin wallet value is at {wallet_value1:.2f}.\n")
-output2 = (f"\n{currency2} {pricetofloat2:.2f}, Ethereum wallet value is at {wallet_value2:.2f}.")
 
 #schedule when code will run at specific intervals
 def perfect_timing():
@@ -52,6 +32,29 @@ def perfect_timing():
 
 #twilio code to send text message
 def txt_code():
+
+	#bitcoin local variables
+	response1 = requests.get("https://api.coinbase.com/v2/prices/BTC-USD/spot")
+	data1 = response1.json()
+	currency1 = data1["data"]["base"]
+	price1 = data1["data"]["amount"]
+	bitcoin_env_amount = float(os.environ.get("bitcoin_amount"))
+	pricetofloat1 = float(price1)
+	wallet_value1 = pricetofloat1 * bitcoin_env_amount
+
+	#ethereum local variables
+	response2 = requests.get("https://api.coinbase.com/v2/prices/ETH-USD/spot")
+	data2 = response2.json()
+	currency2 = data2["data"]["base"]
+	price2 = data2["data"]["amount"]
+	ethereum_env_amount = float(os.environ.get("ethereum_amount"))
+	pricetofloat2 = float(price2)
+	wallet_value2 = pricetofloat2 * ethereum_env_amount
+
+	#verbiage to be sent via text message
+	output1 = (f"{currency1} {pricetofloat1:.2f}, Bitcoin wallet value is at {wallet_value1:.2f}.\n")
+	output2 = (f"\n{currency2} {pricetofloat2:.2f}, Ethereum wallet value is at {wallet_value2:.2f}.")
+	
 	message_to_send1 = (output1)
 	message_to_send2 = (output2)
 	receiving_phone_number = os.environ.get("my_phone_number")
